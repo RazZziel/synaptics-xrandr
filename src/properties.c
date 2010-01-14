@@ -80,6 +80,7 @@ Atom prop_coastspeed            = 0;
 Atom prop_pressuremotion        = 0;
 Atom prop_pressuremotion_factor = 0;
 Atom prop_grab                  = 0;
+Atom prop_rotation              = 0;
 
 static Atom
 InitAtom(DeviceIntPtr dev, char *name, int format, int nvalues, int *values)
@@ -251,6 +252,7 @@ InitDeviceProperties(LocalDevicePtr local)
 
     prop_grab = InitAtom(local->dev, SYNAPTICS_PROP_GRAB, 8, 1, &para->grab_event_device);
 
+    prop_rotation = InitAtom(local->dev, SYNAPTICS_PROP_ROTATION, 8, 1, &para->grab_event_device);
 }
 
 int
@@ -588,6 +590,41 @@ SetProperty(DeviceIntPtr dev, Atom property, XIPropertyValuePtr prop,
             return BadMatch;
 
         para->grab_event_device = *(BOOL*)prop->data;
+    } else if (property == prop_rotation)
+    {
+        if (prop->size != 1 || prop->format != 8 || prop->type != XA_INTEGER)
+            return BadMatch;
+
+        para->rotation = *(CARD8*)prop->data;
+        if (para->rotation > 3)
+            return BadValue;
+
+        switch ( para->rotation ) {
+        case R_NORMAL:
+            para->left_edge   = para->left_edge;
+            para->right_edge  = para->right_edge;
+            para->top_edge    = para->top_edge;
+            para->bottom_edge = para->bottom_edge;
+            break;
+        case R_LEFT:
+            para->left_edge   = para->right_edge;
+            para->right_edge  = para->left_edge;
+            para->top_edge    = para->bottom_edge;
+            para->bottom_edge = para->top_edge;
+            break;
+        case R_INVERTED:
+            para->left_edge   = para->bottom_edge;
+            para->right_edge  = para->top_edge;
+            para->top_edge    = para->left_edge;
+            para->bottom_edge = para->right_edge;
+            break;
+        case R_RIGHT:
+            para->left_edge   = para->top_edge;
+            para->right_edge  = para->bottom_edge;
+            para->top_edge    = para->right_edge;
+            para->bottom_edge = para->left_edge;
+            break;
+        }
     }
 
     return Success;

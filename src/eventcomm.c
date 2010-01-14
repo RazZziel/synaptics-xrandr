@@ -319,11 +319,21 @@ EventReadHwState(LocalDevicePtr local, struct SynapticsHwInfo *synhw,
 	case EV_ABS:
 	    switch (ev.code) {
 	    case ABS_X:
-		hw->x = ev.value;
-		break;
+	        switch (para->rotation) {
+	        case R_NORMAL:   hw->x =  ev.value; break;
+	        case R_LEFT:     hw->y =  ev.value; break;
+	        case R_INVERTED: hw->x = -ev.value; break;
+	        case R_RIGHT:    hw->y = -ev.value; break;
+	        }
+	        break;
 	    case ABS_Y:
-		hw->y = ev.value;
-		break;
+	        switch (para->rotation) {
+	        case R_NORMAL:   hw->y =  ev.value; break;
+	        case R_LEFT:     hw->x = -ev.value; break;
+	        case R_INVERTED: hw->y = -ev.value; break;
+	        case R_RIGHT:    hw->x =  ev.value; break;
+	        }
+	        break;
 	    case ABS_PRESSURE:
 		hw->z = ev.value;
 		break;

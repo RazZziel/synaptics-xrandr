@@ -142,4 +142,7 @@
 /* 8 bit (BOOL) */
 #define SYNAPTICS_PROP_GRAB "Synaptics Grab Event Device"
 
+/* 8 bit, valid values (0, 1, 2, 3) */
+#define SYNAPTICS_PROP_ROTATION "Synaptics Rotation"
+
 #endif /* _SYNAPTICS_PROPERTIES_H_ */

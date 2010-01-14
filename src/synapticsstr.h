@@ -79,6 +79,13 @@ enum TapButtonState {
     TBS_BUTTON_DOWN_UP		/* Send button down event + set up state */
 };
 
+enum Rotation {
+    R_NORMAL,
+    R_LEFT,
+    R_INVERTED,
+    R_RIGHT
+};
+
 typedef struct _SynapticsPrivateRec
 {
     SynapticsSHM synpara_default;	/* Default parameter settings, read from

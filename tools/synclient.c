@@ -201,6 +201,8 @@ static struct Parameter params[] = {
 		SYNAPTICS_PROP_PRESSURE_MOTION_FACTOR,	0 /*float*/,	1),
     DEFINE_PAR("GrabEventDevice",      grab_event_device,       PT_BOOL,   0, 1,
 		SYNAPTICS_PROP_GRAB,	8,	0),
+    DEFINE_PAR("Rotation",             rotation,                PT_INT,    0, 3,
+		SYNAPTICS_PROP_ROTATION,	8,	0),
     { NULL, 0, 0, 0, 0 }
 };
 
