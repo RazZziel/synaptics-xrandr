@@ -155,4 +155,7 @@
 /* 32 bit, 4 values, left, right, top, bottom */
 #define SYNAPTICS_PROP_AREA "Synaptics Area"
 
+/* 8 bit, valid values (0, 1, 2, 3) */
+#define SYNAPTICS_PROP_ROTATION "Synaptics Rotation"
+
 #endif /* _SYNAPTICS_PROPERTIES_H_ */

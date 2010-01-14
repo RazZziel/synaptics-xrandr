@@ -149,8 +149,16 @@ typedef struct _SynapticsParameters
     unsigned int resolution_horiz;          /* horizontal resolution of touchpad in units/mm */
     unsigned int resolution_vert;           /* vertical resolution of touchpad in units/mm */
     int area_left_edge, area_right_edge, area_top_edge, area_bottom_edge; /* area coordinates absolute */
+    int rotation;
 } SynapticsParameters;
 
+
+enum Rotation {
+    R_NORMAL,
+    R_LEFT,
+    R_INVERTED,
+    R_RIGHT
+};
 
 typedef struct _SynapticsPrivateRec
 {

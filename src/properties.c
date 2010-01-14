@@ -84,6 +84,7 @@ Atom prop_gestures              = 0;
 Atom prop_capabilities          = 0;
 Atom prop_resolution            = 0;
 Atom prop_area                  = 0;
+Atom prop_rotation              = 0;
 
 static Atom
 InitAtom(DeviceIntPtr dev, char *name, int format, int nvalues, int *values)
@@ -274,6 +275,8 @@ InitDeviceProperties(LocalDevicePtr local)
     values[2] = para->area_top_edge;
     values[3] = para->area_bottom_edge;
     prop_area = InitAtom(local->dev, SYNAPTICS_PROP_AREA, 32, 4, values);
+
+    prop_rotation = InitAtom(local->dev, SYNAPTICS_PROP_ROTATION, 8, 1, &para->grab_event_device);
 }
 
 int
@@ -642,6 +645,41 @@ SetProperty(DeviceIntPtr dev, Atom property, XIPropertyValuePtr prop,
         para->area_right_edge  = area[1];
         para->area_top_edge    = area[2];
         para->area_bottom_edge = area[3];
+    } else if (property == prop_rotation)
+    {
+        if (prop->size != 1 || prop->format != 8 || prop->type != XA_INTEGER)
+            return BadMatch;
+
+        para->rotation = *(CARD8*)prop->data;
+        if (para->rotation > 3)
+            return BadValue;
+
+        switch ( para->rotation ) {
+        case R_NORMAL:
+            para->left_edge   = para->left_edge;
+            para->right_edge  = para->right_edge;
+            para->top_edge    = para->top_edge;
+            para->bottom_edge = para->bottom_edge;
+            break;
+        case R_LEFT:
+            para->left_edge   = para->right_edge;
+            para->right_edge  = para->left_edge;
+            para->top_edge    = para->bottom_edge;
+            para->bottom_edge = para->top_edge;
+            break;
+        case R_INVERTED:
+            para->left_edge   = para->bottom_edge;
+            para->right_edge  = para->top_edge;
+            para->top_edge    = para->left_edge;
+            para->bottom_edge = para->right_edge;
+            break;
+        case R_RIGHT:
+            para->left_edge   = para->top_edge;
+            para->right_edge  = para->bottom_edge;
+            para->top_edge    = para->right_edge;
+            para->bottom_edge = para->left_edge;
+            break;
+        }
     }
 
     return Success;

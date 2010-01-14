@@ -536,6 +536,7 @@ static void set_default_parameters(LocalDevicePtr local)
     pars->tap_and_drag_gesture = xf86SetBoolOption(opts, "TapAndDragGesture", TRUE);
     pars->resolution_horiz = xf86SetIntOption(opts, "HorizResolution", horizResolution);
     pars->resolution_vert = xf86SetIntOption(opts, "VertResolution", vertResolution);
+    pars->rotation = xf86SetIntOption(opts, "Rotation", 0);
 
     /* Warn about (and fix) incorrectly configured TopEdge/BottomEdge parameters */
     if (pars->top_edge > pars->bottom_edge) {
